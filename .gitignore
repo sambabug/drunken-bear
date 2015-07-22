@@ -59,3 +59,4 @@ Thumbs.db
 # Eclipse project files
 .classpath
 .project
+app/app.iml

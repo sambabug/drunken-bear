@@ -1,8 +1,8 @@
 package net.opgenorth.phoneword;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CallLogActivity extends ActionBarActivity {
+public class CallLogActivity extends AppCompatActivity {
 
     ListView _phonewordList;
     ArrayAdapter<String> _adapter;
@@ -21,9 +21,16 @@ public class CallLogActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_log);
 
+        initializeToolbar();
+        
         _phonewordList = (ListView) findViewById(R.id.call_log_list);
         _adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<String>());
         _phonewordList.setAdapter(_adapter);
+    }
+
+    private void initializeToolbar() {
+        Toolbar tb = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(tb);
     }
 
 
