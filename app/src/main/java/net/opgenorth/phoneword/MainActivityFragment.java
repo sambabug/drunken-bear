@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import net.opgenorth.phoneword.databinding.FragmentMainBinding;
+
 public class MainActivityFragment extends Fragment {
 
     private PhonewordViewModel mPhonewordViewModel;
@@ -27,10 +29,11 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         mPhonewordViewModel = new PhonewordViewModel();
+        FragmentMainBinding b = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        b.setPhonewordVM(mPhonewordViewModel);
+        View v = b.getRoot();
 
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
         mTranslateButton = (Button) v.findViewById(R.id.translate_button);
         mCallButton = (Button) v.findViewById(R.id.call_button);
         mPhoneWordEditText = (EditText) v.findViewById(R.id.phoneword_text);
@@ -39,15 +42,6 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mPhonewordViewModel.setPhoneWord(mPhoneWordEditText.getText().toString());
-                String callButtonText = getResources().getString(R.string.call_button_text);
-
-                if (TextUtils.isEmpty(mPhonewordViewModel.getPhoneNumber())) {
-                    mCallButton.setEnabled(false);
-                } else {
-                    mCallButton.setEnabled(true);
-                    callButtonText = mPhonewordViewModel.getPhoneWord();
-                }
-                mCallButton.setText(callButtonText);
             }
         });
 
@@ -57,7 +51,7 @@ public class MainActivityFragment extends Fragment {
                 final Intent callIntent = new Intent(Intent.ACTION_CALL);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                 alertDialogBuilder
-                        .setMessage("Call " + mPhonewordViewModel.getPhoneWord() + "?")
+                        .setMessage(mCallButton.getText())
                         .setNeutralButton(R.string.call_button_text, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
