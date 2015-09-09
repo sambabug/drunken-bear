@@ -4,7 +4,7 @@
 
     <data>
         <variable
-            name="phoneword"
+            name="phonewordVM"
             type="net.opgenorth.phoneword.PhonewordViewModel" />
     </data>
 
@@ -26,7 +26,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:hint="@string/phoneword_label_text"
-                android:text=""
+                android:text="@{phonewordVM.phoneWord}"
                 tools:ignore="TextFields" />
         </android.support.design.widget.TextInputLayout>
 
@@ -54,7 +54,7 @@
                 android:drawableLeft="@drawable/ic_action_phone_call"
                 android:elevation="40dp"
                 android:enabled="false"
-                android:text="@{phoneword.callButtonText}" />
+                android:text="@{phonewordVM.callButtonText}" />
         </LinearLayout>
 
     </LinearLayout>

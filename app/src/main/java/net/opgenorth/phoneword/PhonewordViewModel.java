@@ -2,10 +2,7 @@ package net.opgenorth.phoneword;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
-import android.view.View;
 
-import static net.opgenorth.phoneword.PhonewordUtils.formatStringAsPhoneNumber;
 import static net.opgenorth.phoneword.PhonewordUtils.toNumber;
 
 public class PhonewordViewModel extends BaseObservable {
@@ -14,7 +11,6 @@ public class PhonewordViewModel extends BaseObservable {
     private String mPhoneNumber = "";
     private String mPhoneWord = "";
     private String mCallButtonText = "Call";
-    private String phoneNumber;
 
     @Bindable
     public String getPhoneNumber() {
@@ -39,20 +35,20 @@ public class PhonewordViewModel extends BaseObservable {
 
     public void setPhoneWord(String phoneWord) {
         mPhoneWord = phoneWord;
-//        notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneWord);
 
         mPhoneNumber = toNumber(phoneWord);
-        mCallButtonText = "Call " + mPhoneNumber + "?";
 
 
         if (mPhoneNumber != null) {
             mIsTranslated = true;
-//            notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneNumber);
+            notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneNumber);
+            mCallButtonText = "Call " + mPhoneNumber + "?";
+
         } else {
+            mCallButtonText = "Call";
             mIsTranslated = false;
         }
+        notifyPropertyChanged(net.opgenorth.phoneword.BR.callButtonText);
 
     }
-
-
 }
