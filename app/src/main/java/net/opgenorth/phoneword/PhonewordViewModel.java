@@ -3,6 +3,7 @@ package net.opgenorth.phoneword;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.text.TextUtils;
+import android.view.View;
 
 import static net.opgenorth.phoneword.PhonewordUtils.toNumber;
 
@@ -36,7 +37,12 @@ public class PhonewordViewModel extends BaseObservable {
 
     public void setPhoneWord(String phoneWord) {
         mPhoneWord = phoneWord;
-        mPhoneNumber = toNumber(phoneWord);
+        onTranslate(null);
+
+    }
+
+    public void onTranslate(View v) {
+        mPhoneNumber = toNumber(mPhoneWord);
 
         if (TextUtils.isEmpty(mPhoneNumber)) {
             mCallButtonText = "Call";
@@ -48,6 +54,5 @@ public class PhonewordViewModel extends BaseObservable {
         notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneNumber);
         notifyPropertyChanged(net.opgenorth.phoneword.BR.isTranslated);
         notifyPropertyChanged(net.opgenorth.phoneword.BR.callButtonText);
-
     }
 }
