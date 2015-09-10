@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,21 +20,27 @@ public final class PhonewordUtils {
 
     }
 
-
-    public static String formatStringAsPhoneNumber(String input) {
+    /**
+     * Translate the phoneword into a phone number and formats it.
+     *
+     * @param phoneNumber
+     * @return
+     */
+    public static String formatStringAsPhoneNumber(@NotNull String phoneNumber) {
         String output;
-        switch (input.length()) {
+
+        switch (phoneNumber.length()) {
             case 7:
-                output = String.format("%s-%s", input.substring(0,3), input.substring(3,7));
+                output = String.format("%s-%s", phoneNumber.substring(0, 3), phoneNumber.substring(3, 7));
                 break;
             case 10:
-                output = String.format("(%s) %s-%s", input.substring(0,3), input.substring(3,6), input.substring(6,10));
+                output = String.format("(%s) %s-%s", phoneNumber.substring(0, 3), phoneNumber.substring(3, 6), phoneNumber.substring(6, 10));
                 break;
             case 11:
-                output = String.format("%s (%s) %s-%s", input.substring(0,1) ,input.substring(1,4), input.substring(4,7), input.substring(7,11));
+                output = String.format("%s (%s) %s-%s", phoneNumber.substring(0, 1), phoneNumber.substring(1, 4), phoneNumber.substring(4, 7), phoneNumber.substring(7, 11));
                 break;
             case 12:
-                output = String.format("+%s (%s) %s-%s", input.substring(0,2) ,input.substring(2,5), input.substring(5,8), input.substring(8,12));
+                output = String.format("+%s (%s) %s-%s", phoneNumber.substring(0, 2), phoneNumber.substring(2, 5), phoneNumber.substring(5, 8), phoneNumber.substring(8, 12));
                 break;
             default:
                 return null;
@@ -40,17 +48,23 @@ public final class PhonewordUtils {
         return output;
     }
 
-    public static String toNumber(String raw) {
-        if (TextUtils.isEmpty(raw)) {
+    /**
+     * Takes a "phoneword" and translate it to a phone number.
+     *
+     * @param phoneWord
+     * @return
+     */
+    public static String toNumber(String phoneWord) {
+        if (TextUtils.isEmpty(phoneWord)) {
             return "";
         } else {
-            raw = raw.toUpperCase();
+            phoneWord = phoneWord.toUpperCase();
         }
 
         StringBuilder newNumber = new StringBuilder();
 
-        for (int i = 0; i < raw.length(); i++) {
-            String c = raw.substring(i, i + 1);
+        for (int i = 0; i < phoneWord.length(); i++) {
+            String c = phoneWord.substring(i, i + 1);
 
             if ("0123456789".contains(c)) {
                 newNumber.append(c);
@@ -62,10 +76,9 @@ public final class PhonewordUtils {
             }
         }
         return formatStringAsPhoneNumber(newNumber.toString());
-
     }
 
-    static int translateToNumber(CharSequence c) {
+    private static int translateToNumber(CharSequence c) {
         if ("ABC".contains(c)) {
             return 2;
         } else if ("DEF".contains(c)) {
@@ -87,7 +100,13 @@ public final class PhonewordUtils {
         }
     }
 
-    public static void savePhoneword(Context context, String number) {
+    /**
+     * Persistes the phone word for later use.
+     *
+     * @param context
+     * @param number
+     */
+    public static void savePhoneword(@NotNull Context context, @NotNull String number) {
 
         SharedPreferences settings = context.getSharedPreferences(SETTINGS_PHONEWORD, 0);
         Set<String> phonewords = settings.getStringSet(SETTINGS_SAVED_PHONEWORDS, new HashSet<String>());
@@ -96,7 +115,13 @@ public final class PhonewordUtils {
         settings.edit().putStringSet(SETTINGS_SAVED_PHONEWORDS, phonewords).apply();
     }
 
-    public static List<String> getPhonewords(Context context) {
+    /**
+     * Gets a list of all the phonewords that were saved.
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getPhonewords(@NotNull Context context) {
         SharedPreferences settings = context.getSharedPreferences(SETTINGS_PHONEWORD, 0);
         Set<String> phonewords = settings.getStringSet(SETTINGS_SAVED_PHONEWORDS, new HashSet<String>());
         return new ArrayList<String>(phonewords);
