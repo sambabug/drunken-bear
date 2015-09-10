@@ -101,7 +101,7 @@ public final class PhonewordUtils {
     }
 
     /**
-     * Persistes the phone word for later use.
+     * Persistss the phone word for later use.
      *
      * @param context
      * @param number
