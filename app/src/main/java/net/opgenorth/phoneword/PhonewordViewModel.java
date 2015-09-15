@@ -37,11 +37,10 @@ public class PhonewordViewModel extends BaseObservable {
 
     public void setPhoneWord(String phoneWord) {
         mPhoneWord = phoneWord;
-        onTranslate(null);
-
+        notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneWord);
     }
 
-    public void onTranslate(View v) {
+    public void translatePhoneWord() {
         mPhoneNumber = toNumber(mPhoneWord);
 
         if (TextUtils.isEmpty(mPhoneNumber)) {
@@ -54,5 +53,9 @@ public class PhonewordViewModel extends BaseObservable {
         notifyPropertyChanged(net.opgenorth.phoneword.BR.phoneNumber);
         notifyPropertyChanged(net.opgenorth.phoneword.BR.isTranslated);
         notifyPropertyChanged(net.opgenorth.phoneword.BR.callButtonText);
+    }
+
+    public void onTranslate(View v) {
+        translatePhoneWord();
     }
 }
